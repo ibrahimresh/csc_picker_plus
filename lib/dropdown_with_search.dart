@@ -20,6 +20,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
   final Color? dialogBackgroundColor;
   final InputDecoration? searchInputDecoration;
   final Widget? dividerWidget;
+  final Color? dialogBarrierColor;
   final Function onChanged;
 
   const DropdownWithSearch({
@@ -42,7 +43,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
     this.isArabic,
     this.dialogBackgroundColor,
     this.searchInputDecoration,
-    this.dividerWidget,
+    this.dividerWidget, this.dialogBarrierColor,
   });
 
   @override
@@ -53,6 +54,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
         onTap: () {
           showDialog(
               context: context,
+              barrierColor: dialogBarrierColor,
               builder: (context) => SearchDialog(
                   dividerWidget: dividerWidget,
                   dialogBackgroundColor: dialogBackgroundColor,
