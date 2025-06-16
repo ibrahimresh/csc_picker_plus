@@ -585,10 +585,12 @@ class CSCPickerPlus extends StatefulWidget {
     this.stateDropdownLabel = "State",
     this.cityDropdownLabel = "City",
     this.countryFilter,
-    this.spaceBetweenItems, this.countryTitle, this.stateTitle,
+    this.spaceBetweenItems, this.countryTitle, this.stateTitle, this.searchInputDecoration, this.dialogBackgroundColor, this.dividerWidget,
   });
 
   final Widget? countryTitle, stateTitle;
+  final InputDecoration? searchInputDecoration;
+  final Color? dialogBackgroundColor;
 
   final ValueChanged<String>? onCountryChanged;
   final ValueChanged<String?>? onStateChanged;
@@ -625,6 +627,7 @@ class CSCPickerPlus extends StatefulWidget {
   final List<CscCountry>? countryFilter;
 
   final double? spaceBetweenItems;
+  final Widget? dividerWidget;
 
   @override
   CSCPickerPlusState createState() => CSCPickerPlusState();
@@ -905,6 +908,9 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
   ///Country Dropdown Widget
   Widget countryDropdown() {
     return DropdownWithSearch(
+      searchInputDecoration: widget.searchInputDecoration,
+      dialogBackgroundColor: widget.dialogBackgroundColor,
+      dividerWidget: widget.dividerWidget,
       title: widget.countryDropdownLabel.tr(widget.countryStateLanguage),
       placeHolder: widget.countrySearchPlaceholder.tr(widget.countryStateLanguage),
       selectedItemStyle: widget.selectedItemStyle,
@@ -935,6 +941,9 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
   ///State Dropdown Widget
   Widget stateDropdown() {
     return DropdownWithSearch(
+      searchInputDecoration: widget.searchInputDecoration,
+      dialogBackgroundColor: widget.dialogBackgroundColor,
+      dividerWidget: widget.dividerWidget,
       title: widget.stateDropdownLabel.tr(widget.countryStateLanguage),
       placeHolder: widget.stateSearchPlaceholder.tr(widget.countryStateLanguage),
       disabled: _statesModels.isEmpty ? true : false,
@@ -962,6 +971,9 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
   ///City Dropdown Widget
   Widget cityDropdown() {
     return DropdownWithSearch(
+      searchInputDecoration: widget.searchInputDecoration,
+      dialogBackgroundColor: widget.dialogBackgroundColor,
+      dividerWidget: widget.dividerWidget,
       title: widget.cityDropdownLabel.tr(widget.countryStateLanguage),
       placeHolder: widget.citySearchPlaceholder.tr(widget.countryStateLanguage),
       disabled: _cities.isEmpty ? true : false,

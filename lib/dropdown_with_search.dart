@@ -17,7 +17,9 @@ class DropdownWithSearch<T> extends StatelessWidget {
   final bool disabled;
   final String label;
   final bool? isArabic;
-
+  final Color? dialogBackgroundColor;
+  final InputDecoration? searchInputDecoration;
+  final Widget? dividerWidget;
   final Function onChanged;
 
   const DropdownWithSearch({
@@ -38,6 +40,9 @@ class DropdownWithSearch<T> extends StatelessWidget {
     required this.label,
     this.disabled = false,
     this.isArabic,
+    this.dialogBackgroundColor,
+    this.searchInputDecoration,
+    this.dividerWidget,
   });
 
   @override
@@ -49,6 +54,9 @@ class DropdownWithSearch<T> extends StatelessWidget {
           showDialog(
               context: context,
               builder: (context) => SearchDialog(
+                  dividerWidget: dividerWidget,
+                  dialogBackgroundColor: dialogBackgroundColor,
+                  searchInputDecoration: searchInputDecoration,
                   placeHolder: placeHolder,
                   title: title,
                   searchInputRadius: searchBarRadius,
@@ -81,15 +89,13 @@ class DropdownWithSearch<T> extends StatelessWidget {
                   BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       color: Colors.grey.shade300,
-                      border:
-                          Border.all(color: Colors.grey.shade300, width: 1)),
+                      border: Border.all(color: Colors.grey.shade300, width: 1)),
           child: Row(
             children: [
               Expanded(
                   child: Text(selected.toString(),
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          selectedItemStyle ?? const TextStyle(fontSize: 14))),
+                      style: selectedItemStyle ?? const TextStyle(fontSize: 14))),
               const Icon(Icons.keyboard_arrow_down_rounded)
             ],
           ),
@@ -107,7 +113,9 @@ class SearchDialog extends StatefulWidget {
   final TextStyle? itemStyle;
   final double? searchInputRadius;
   final bool? displayArabic;
-
+  final Color? dialogBackgroundColor;
+  final InputDecoration? searchInputDecoration;
+  final Widget? dividerWidget;
   final double? dialogRadius;
 
   const SearchDialog({
@@ -120,6 +128,9 @@ class SearchDialog extends StatefulWidget {
     this.dialogRadius,
     this.itemStyle,
     this.displayArabic,
+    this.dialogBackgroundColor,
+    this.searchInputDecoration,
+    this.dividerWidget,
   });
 
   @override
@@ -141,24 +152,20 @@ class _SearchDialogState<T> extends State<SearchDialog> {
             filteredList = widget.items;
           } else {
             filteredList = widget.items
-                .where((element) => element
-                    .toString()
-                    .toLowerCase()
-                    .contains(textController.text.toLowerCase()))
+                .where((element) =>
+                    element.toString().toLowerCase().contains(textController.text.toLowerCase()))
                 .toList();
           }
         });
       });
     } else {
-      filteredList = widget.items
-          .map((e) => widget.displayArabic == true ? e.nameAr : e.name)
-          .toList();
+      filteredList =
+          widget.items.map((e) => widget.displayArabic == true ? e.nameAr : e.name).toList();
       textController.addListener(() {
         setState(() {
           if (textController.text.isEmpty) {
-            filteredList = widget.items
-                .map((e) => widget.displayArabic == true ? e.nameAr : e.name)
-                .toList();
+            filteredList =
+                widget.items.map((e) => widget.displayArabic == true ? e.nameAr : e.name).toList();
           } else {
             filteredList = widget.items
                 .where((element) {
@@ -189,6 +196,7 @@ class _SearchDialogState<T> extends State<SearchDialog> {
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
+      dialogBackgroundColor: widget.dialogBackgroundColor,
       shape: RoundedRectangleBorder(
           borderRadius: widget.dialogRadius != null
               ? BorderRadius.circular(widget.dialogRadius!)
@@ -206,8 +214,7 @@ class _SearchDialogState<T> extends State<SearchDialog> {
                   child: Text(
                     widget.title,
                     style: widget.titleStyle ??
-                        const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                 ),
                 IconButton(
@@ -237,31 +244,31 @@ class _SearchDialogState<T> extends State<SearchDialog> {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 autofocus: true,
-                decoration: InputDecoration(
-                  isDense: true,
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: widget.placeHolder,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        widget.searchInputRadius != null
+                decoration: widget.searchInputDecoration ??
+                    InputDecoration(
+                      isDense: true,
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: widget.placeHolder,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(widget.searchInputRadius != null
                             ? Radius.circular(widget.searchInputRadius!)
                             : const Radius.circular(5)),
-                    borderSide: const BorderSide(
-                      color: Colors.black26,
+                        borderSide: const BorderSide(
+                          color: Colors.black26,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(widget.searchInputRadius != null
+                            ? Radius.circular(widget.searchInputRadius!)
+                            : const Radius.circular(5)),
+                        borderSide: const BorderSide(color: Colors.black12),
+                      ),
                     ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                        widget.searchInputRadius != null
-                            ? Radius.circular(widget.searchInputRadius!)
-                            : const Radius.circular(5)),
-                    borderSide: const BorderSide(color: Colors.black12),
-                  ),
-                ),
                 style: widget.itemStyle ?? const TextStyle(fontSize: 14),
                 controller: textController,
               ),
             ),
+            if (widget.dividerWidget != null) widget.dividerWidget!,
             const SizedBox(height: 5),
             Expanded(
               child: ClipRRect(
@@ -278,12 +285,10 @@ class _SearchDialogState<T> extends State<SearchDialog> {
                             Navigator.pop(context, filteredList[index]);
                           },
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 18),
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
                             child: Text(
                               filteredList[index].toString(),
-                              style: widget.itemStyle ??
-                                  const TextStyle(fontSize: 14),
+                              style: widget.itemStyle ?? const TextStyle(fontSize: 14),
                             ),
                           ));
                     }),
@@ -306,14 +311,17 @@ class CustomDialog extends StatelessWidget {
     this.insetAnimationDuration = const Duration(milliseconds: 100),
     this.insetAnimationCurve = Curves.decelerate,
     this.shape,
-    this.constraints = const BoxConstraints(
-        minWidth: 280.0, minHeight: 280.0, maxHeight: 400.0, maxWidth: 400.0),
+    this.constraints =
+        const BoxConstraints(minWidth: 280.0, minHeight: 280.0, maxHeight: 400.0, maxWidth: 400.0),
+    this.dialogBackgroundColor,
   });
 
   /// The widget below this widget in the tree.
   ///
   /// {@macro flutter.widgets.child}
   final Widget? child;
+
+  final Color? dialogBackgroundColor;
 
   /// The duration of the animation to show when the system keyboard intrudes
   /// into the space that the dialog is placed in.
@@ -342,8 +350,7 @@ class CustomDialog extends StatelessWidget {
   }
 
   static const RoundedRectangleBorder _defaultDialogShape =
-      RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)));
+      RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(4.0)));
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +371,7 @@ class CustomDialog extends StatelessWidget {
             constraints: constraints,
             child: Material(
               elevation: 15.0,
-              color: _getColor(context),
+              color: dialogBackgroundColor ?? _getColor(context),
               type: MaterialType.card,
               shape: shape ?? dialogTheme.shape ?? _defaultDialogShape,
               child: child,
