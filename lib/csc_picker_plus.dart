@@ -585,8 +585,10 @@ class CSCPickerPlus extends StatefulWidget {
     this.stateDropdownLabel = "State",
     this.cityDropdownLabel = "City",
     this.countryFilter,
-    this.spaceBetweenItems,
+    this.spaceBetweenItems, this.countryTitle, this.stateTitle,
   });
+
+  final Widget? countryTitle, stateTitle;
 
   final ValueChanged<String>? onCountryChanged;
   final ValueChanged<String?>? onStateChanged;
@@ -869,8 +871,10 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  if(widget.countryTitle != null) widget.countryTitle!,
                   countryDropdown(),
                   widget.showStates ? SizedBox(height: widget.spaceBetweenItems ?? 16.0) : const SizedBox.shrink(),
+                  if(widget.showStates && widget.stateTitle != null) widget.stateTitle!,
                   widget.showStates ? stateDropdown() : const SizedBox.shrink(),
                   widget.showStates && widget.showCities
                       ? SizedBox(height: widget.spaceBetweenItems ?? 16.0)
