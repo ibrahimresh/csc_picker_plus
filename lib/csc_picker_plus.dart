@@ -659,39 +659,44 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
   @override
   void initState() {
     super.initState();
-    setDefaults();
+
     if (widget.countryFilter != null) {
       _countryFilter = widget.countryFilter!;
     }
-    getCountries();
+    _initData();
     _selectedCity = widget.cityDropdownLabel.tr(widget.countryStateLanguage);
     // _selectedState = widget.stateDropdownLabel.tr(widget.countryStateLanguage); //TODO
   }
 
+  _initData() async {
+    await getCountries();
+    setDefaults();
+  }
+
   Future<void> setDefaults() async {
-    //TODO
-    // if (widget.currentCountry != null) {
-    //   setState(() => _selectedCountry = widget.currentCountry);
-    //   if (widget.showStates) await getStates();
-    // }
-    //TODO
-    // if (widget.currentState != null) {
-    //   setState(() => _selectedState = widget.currentState!);
-    //   if (widget.showCities) await getCities();
-    // }
+    if (widget.currentCountry != null) {
+      setState(() => _selectedCountry =
+          _countryModels.firstWhere((item) => item?.name == widget.currentCountry));
+      if (widget.showStates) await getStates();
+    }
+
+    if (widget.currentState != null) {
+      setState(() =>
+          _selectedState = _statesModels.firstWhere((item) => item?.name == widget.currentState));
+      if (widget.showCities) await getCities();
+    }
 
     if (widget.currentCity != null) {
       setState(() => _selectedCity = widget.currentCity!);
     }
   }
 
-  //TODO
-  // void _setDefaultCountry() {
-  //   if (widget.defaultCountry != null) {
-  //     log(_countryModels[Countries[widget.defaultCountry]!]?.name ?? '');
-  //     _onSelectedCountry(_countryModels[Countries[widget.defaultCountry]!]!.name!);
-  //   }
-  // }
+  void _setDefaultCountry() {
+    if (widget.defaultCountry != null) {
+      log(_countryModels[Countries[widget.defaultCountry]!]?.name ?? '');
+      _onSelectedCountry(_countryModels[Countries[widget.defaultCountry]!]!);
+    }
+  }
 
   ///Read JSON country data from assets
   Future<dynamic> getResponse() async {
@@ -713,7 +718,7 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
         addCountryToList(data);
       }
     }
-    // _setDefaultCountry();   //TODO
+    _setDefaultCountry();
 
     if (widget.countryStateLanguage == CountryStateLanguage.arabic) {
       _countryModels.sort((a, b) => a!.nameAr!.compareTo(b?.nameAr ?? ''));

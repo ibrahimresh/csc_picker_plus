@@ -126,11 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 /// Search bar radius [OPTIONAL PARAMETER]
                 searchBarRadius: 10.0,
 
+                currentCountry: 'Syria',
+                currentState: 'Tartus Governorate',
                 /// triggers once country selected in dropdown
                 onCountryChanged: (value) {
-                  print('value.name');
-
-                  print(value.name);
                   setState(() {
                     /// store value in country variable
                     countryValue = value.name ?? '';

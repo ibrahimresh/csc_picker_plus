@@ -53,7 +53,6 @@ class DropdownWithSearch<T> extends StatelessWidget {
       absorbing: disabled,
       child: GestureDetector(
         onTap: () {
-          print('KAS AKKAH');
           showDialog(
               context: context,
               barrierColor: dialogBarrierColor,
