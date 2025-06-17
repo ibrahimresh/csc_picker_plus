@@ -1,6 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+
 
 class DropdownWithSearch<T> extends StatelessWidget {
   final String title;
@@ -43,7 +43,8 @@ class DropdownWithSearch<T> extends StatelessWidget {
     this.isArabic,
     this.dialogBackgroundColor,
     this.searchInputDecoration,
-    this.dividerWidget, this.dialogBarrierColor,
+    this.dividerWidget,
+    this.dialogBarrierColor,
   });
 
   @override
@@ -67,7 +68,7 @@ class DropdownWithSearch<T> extends StatelessWidget {
                   itemStyle: itemStyle,
                   displayArabic: isArabic,
                   items: items)).then((value) {
-            onChanged(value);
+                    onChanged(value);
             /* if(value!=null)
                     {
                       onChanged(value);
@@ -189,6 +190,17 @@ class _SearchDialogState<T> extends State<SearchDialog> {
     super.initState();
   }
 
+  dynamic _getSelectedItem(String countryName) {
+    final list = widget.items;
+    if (list is List<String?>) return countryName;
+    final item = list.firstWhere((element) {
+      return element.name.toString().toLowerCase() == countryName ||
+          element.nameAr.toString().toLowerCase() == countryName;
+    });
+
+    return item;
+  }
+
   @override
   void dispose() {
     textController.dispose();
@@ -284,7 +296,8 @@ class _SearchDialogState<T> extends State<SearchDialog> {
                       return InkWell(
                           onTap: () {
                             FocusScope.of(context).unfocus();
-                            Navigator.pop(context, filteredList[index]);
+                            final item = _getSelectedItem(filteredList[index]);
+                            Navigator.pop(context, item);
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),

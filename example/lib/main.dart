@@ -57,10 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 showCities: true,
 
                 /// Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
-                flagState: CountryFlag.ENABLE,
-
+                flagState: CountryFlag.DISABLE,
                 /// Control the language of the country and state list [OPTIONAL PARAMETER]
-                countryStateLanguage: CountryStateLanguage.englishOrNative,
+                countryStateLanguage: CountryStateLanguage.arabic,
 
                 /// Control the language of the country and state list [OPTIONAL PARAMETER]
                 cityLanguage: CityLanguage.native,
@@ -129,9 +128,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 /// triggers once country selected in dropdown
                 onCountryChanged: (value) {
+                  print('value.name');
+
+                  print(value.name);
                   setState(() {
                     /// store value in country variable
-                    countryValue = value;
+                    countryValue = value.name ?? '';
                   });
                 },
 
