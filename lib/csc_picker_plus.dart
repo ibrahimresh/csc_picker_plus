@@ -675,14 +675,14 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
 
   Future<void> setDefaults() async {
     if (widget.currentCountry != null) {
-      setState(() => _selectedCountry =
-          _countryModels.firstWhere((item) => item?.name == widget.currentCountry));
+      setState(() => _selectedCountry = _countryModels.firstWhere(
+          (item) => item?.name == widget.currentCountry || item?.nameAr == widget.currentCountry));
       if (widget.showStates) await getStates();
     }
 
     if (widget.currentState != null) {
-      setState(() =>
-          _selectedState = _statesModels.firstWhere((item) => item?.name == widget.currentState));
+      setState(() => _selectedState = _statesModels.firstWhere(
+          (item) => item?.name == widget.currentState || item?.nameAr == widget.currentState));
       if (widget.showCities) await getCities();
     }
 
