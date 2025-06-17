@@ -578,6 +578,7 @@ class CSCPickerPlus extends StatefulWidget {
     this.currentState,
     this.currentCity,
     this.disableCountry = false,
+    this.disableState = false,
     this.countrySearchPlaceholder = "Search Country",
     this.stateSearchPlaceholder = "Search State",
     this.citySearchPlaceholder = "Search City",
@@ -610,7 +611,7 @@ class CSCPickerPlus extends StatefulWidget {
   final CountryStateLanguage countryStateLanguage;
   final CityLanguage cityLanguage;
 
-  final bool disableCountry;
+  final bool disableCountry, disableState;
 
   ///Parameters to change style of CSC Picker
   final TextStyle? selectedItemStyle, dropdownHeadingStyle, dropdownItemStyle;
@@ -973,7 +974,7 @@ class CSCPickerPlusState extends State<CSCPickerPlus> {
       dialogBarrierColor: widget.dialogBarrierColor,
       title: widget.stateDropdownLabel.tr(widget.countryStateLanguage),
       placeHolder: widget.stateSearchPlaceholder.tr(widget.countryStateLanguage),
-      disabled: _statesModels.isEmpty ? true : false,
+      disabled: (_statesModels.isEmpty ? true : false) || widget.disableState ? true : false,
       items: _statesModels.map((dropDownStringItem) {
         return dropDownStringItem;
       }).toList(),
